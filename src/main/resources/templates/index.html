@@ -30,6 +30,8 @@
             --main-hieght: 100vh;
             --footer-hieght: 7.5vh;
 
+            --anim-ball-redius: 5em;
+
             /* animation btn -> */
             --btn-color-inactive: #3f3f3f;
             --btn-color-hover: #282828;
@@ -39,8 +41,10 @@
             --btn-background-hover: hsl(195 53% 79% / 0.85);
             --btn-background-active: hsl(195 53% 79% / 1);
 
-            --transion-time: 250ms;
-            --text-animation-time: 500ms;
+            --anim-ball-background: hsl(0 99% 51% / 0.85);
+
+            --transition-time: 500ms;
+            --ball-animation-time: 2s;
         }
         /*:not(html, body, div, h1, p){*/
         /*    border: 2px solid darkgrey;*/
@@ -101,6 +105,7 @@
             grid-template-areas:
                 'main-header'
                 'btn-animation'
+                'anim-element'
             ;
         }
         .main-content > h1{
@@ -110,6 +115,7 @@
 
         .main-header{
             grid-area: main-header;
+            transition: transform var(--transition-time) ease-in-out;
         }
         .btn-animation{
             grid-area: btn-animation;
@@ -123,9 +129,9 @@
             color: var(--btn-color-inactive);
             border: 0.5vh solid var(--btn-color-inactive);
 
-            transition: color var(--transion-time) ease-in-out,
-                background-color var(--transion-time) ease-in-out,
-                border var(--transion-time) ease-in-out;
+            transition: color var(--transition-time) ease-in-out,
+                background-color var(--transition-time) ease-in-out,
+                border var(--transition-time) ease-in-out;
         }
         .btn-animation:hover{
             background-color: var(--btn-background-hover);
@@ -138,33 +144,96 @@
             border: 0.5vh solid var(--btn-color-active);
         }
 
-        .text-animation{
-            /*background-color: transparent;*/
-            /*background-image: linear-gradient(45deg, #f3ec78, #af4261);*/
-            /*background-size: 100%;*/
-            /*background-repeat: repeat;*/
-            /*background-clip: text;*/
-            /*text-fill-color: transparent;*/
-            /*-webkit-background-clip: text;*/
-            /*-webkit-text-fill-color: transparent;*/
-            transition: transform var(--transion-time) ease-in-out;
-            animation: text-animation var(--text-animation-time) alternate;
+        .main-anim-content{
+            width: 50%;
+            height: 50vh;
+            position: relative;
+            border: 0.5em solid black;
+            border-radius: 0.5em;
+            background-color: var(--btn-background-hover);
         }
-        @keyframes text-animation {
+        .anim-ball{
+            width: var(--anim-ball-redius);
+            height: var(--anim-ball-redius);
+            border-radius: 50%;
+            background-color: var(--anim-ball-background);
+            position: absolute;
+            top: 0;
+            left: 0;
+            /*transition: position var(--transition-time) ease-in-out;*/
+        }
+
+        /*.anim-active{*/
+        /*    background-color: transparent;*/
+        /*    background-image: linear-gradient(45deg, #f3ec78, #af4261);*/
+        /*    background-size: 100%;*/
+        /*    background-repeat: repeat;*/
+        /*    background-clip: text;*/
+        /*    text-fill-color: transparent;*/
+        /*    -webkit-background-clip: text;*/
+        /*    -webkit-text-fill-color: transparent;*/
+        /*    animation: var(--ball-animation-time) infinite alternate ball-animation;*/
+        /*}*/
+        .anim-active {
+            /* Other styles... */
+            animation: var(--ball-animation-time) infinite alternate ball-animation;
+        }
+        @keyframes ball-animation {
             0%{
-                transform: translate(0, 0);
+                top: 0;
+                left: 0;
             }
-            25%{
-                transform: translate(-25%, -25%);
+            10%{
+                top: calc(100% - var(--anim-ball-redius));
+                left: 0;
+            }
+            20%{
+                top: calc(100% - var(--anim-ball-redius));
+                left: calc(100% - var(--anim-ball-redius));
+            }
+            30%{
+                top: 0;
+                left: calc(100% - var(--anim-ball-redius));
+            }
+            40%{
+                top: calc(100% - var(--anim-ball-redius));
+                left: 0;
             }
             50%{
-                transform: translate(25%, 25%);
+                top: 0;
+                left: 0;
+            }
+            60%{
+                top: calc(100% - var(--anim-ball-redius));
+                left: calc(100% - var(--anim-ball-redius));
+            }
+            70%{
+                top: calc(100% - var(--anim-ball-redius));
+                left: calc((100% - var(--anim-ball-redius)) / 2);
             }
             75%{
-                transform: translate(-50%, -50%);
+                top: 0;
+                left: calc((100% - var(--anim-ball-redius)) / 2);
+            }
+            80%{
+                top: calc((100% - var(--anim-ball-redius)) / 2);
+                left: calc((100% - var(--anim-ball-redius)) / 2);
+            }
+            85%{
+                top: calc((100% - var(--anim-ball-redius)) / 2);
+                left: calc(100% - var(--anim-ball-redius));
+            }
+            90%{
+                top: calc((100% - var(--anim-ball-redius)) / 2);
+                left: 0;
+            }
+            95%{
+                top: calc((100% - var(--anim-ball-redius)) / 2);
+                left: calc((100% - var(--anim-ball-redius)) / 2);
             }
             100%{
-                transform: translate(50%, 50%);
+                top: calc((100% - var(--anim-ball-redius)) / 2);
+                left: calc((100% - var(--anim-ball-redius)) / 2);
             }
         }
     </style>
@@ -182,8 +251,11 @@
 
     <main class="content-wrapper">
         <div class="main-content">
-            <h1 class="main-header text-animation">Hello World</h1>
+            <h1 class="main-header">Hello World</h1>
             <button type="button" class="btn-animation"></button>
+        </div>
+        <div class="main-anim-content">
+            <div class="anim-ball"></div>
         </div>
     </main>
 
@@ -198,7 +270,7 @@
     <script>
         // vars:
         const btn_animation = document.querySelector(".btn-animation"),
-            head_animation = document.querySelector(".main-header"),
+            ball_animation = document.querySelector(".anim-ball"),
             text_state_arr = ["Press To Activate Animation", "Press To Deactivate Animation"];
 
         let currTextOffset = 0;
@@ -213,7 +285,7 @@
             currTextOffset %= text_state_arr.length;
             btn_animation.textContent = text_state_arr[currTextOffset];
 
-            head_animation.classList.toggle(".text-animation");
+            ball_animation.classList.toggle("anim-active");
         });
     </script>
 </body>
