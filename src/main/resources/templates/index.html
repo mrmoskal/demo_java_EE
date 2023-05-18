@@ -43,9 +43,10 @@
 
             --anim-ball-background: black;
             --anim-ball-border-background: grey;
+            --anim-ball-container-background: white;
 
             --transition-time: 500ms;
-            --ball-animation-time: 2s;
+            --ball-animation-time: 5s;
         }
 
         /* make scroll-bar disappear */
@@ -167,20 +168,30 @@
             position: relative;
             border: 0.5em solid black;
             border-radius: 100%;
-            background-color: var(--btn-background-hover);
+            background-color: var(--anim-ball-container-background);
             overflow: hidden;
         }
         .anim-ball{
             width: var(--anim-ball-redius);
             height: var(--anim-ball-redius);
             border-radius: 50%;
-            border: calc(var(--anim-ball-redius) / 3) solid var(--anim-ball-border-background);
+            border: calc(var(--anim-ball-redius) / 5) solid var(--anim-ball-border-background);
             background-color: var(--anim-ball-background);
 
             /* animation start position */
             position: absolute;
             top: calc((100% - var(--anim-ball-redius)) / 2);
             left: calc((100% - var(--anim-ball-redius)) / 2);
+        }
+        .anim-ball:before{
+            content: '';
+            display: block;
+            width: calc(var(--anim-ball-redius) / 4);
+            height: calc(var(--anim-ball-redius) / 4);
+            border-radius: 50%;
+            background-color: var(--anim-ball-container-background);
+            transform: translate(25%, 25%);
+            z-index: 1;
         }
 
         /*.anim-active{*/
@@ -197,6 +208,9 @@
         .anim-active {
             /* Other styles... */
             animation: var(--ball-animation-time) infinite alternate ball-animation;
+        }
+        .anim-active-container{
+            animation: calc(var(--ball-animation-time) / 2) alternate eyeball-close;
         }
         @keyframes ball-animation {
             0%{
@@ -259,6 +273,21 @@
                 top: calc((100% - var(--anim-ball-redius)) / 2);
                 left: calc((100% - var(--anim-ball-redius)) / 2);
             }
+            200%{
+                top: calc((100% - var(--anim-ball-redius)) / 2);
+                left: calc((100% - var(--anim-ball-redius)) / 2);
+            }
+        }
+        @keyframes eyeball-close {
+            from{
+                height: 35vh;
+            }
+            50%{
+                height: 0;
+            }
+            to{
+                height: 35vh;
+            }
         }
     </style>
 </head>
@@ -295,12 +324,48 @@
         // vars:
         const btn_animation = document.querySelector(".btn-animation"),
             ball_animation = document.querySelector(".anim-ball"),
-            text_state_arr = ["Press To Activate Animation", "Press To Deactivate Animation"];
+            ball_container_animation = document.querySelector(".main-anim-content"),
+            text_state_arr = ["Press To Activate Animation", "Press To Deactivate Animation"],
+            header_main = document.querySelector(".main-header");
 
-        let currTextOffset = 0;
+        let currTextOffset = 0,
+            currInterval;
+
+        // functions:
+        function getStringOfCharInSpan(char){
+            return "<span class='anim-char'>" + char + "</span>";
+        }
+
+        let ballActive = null, containerActive = null;
+        const animationInterval = () => {
+            if (ballActive === null){
+                ballActive = setInterval(() => {
+                    ball_animation.classList.toggle("anim-active");
+                }, 5000);
+            }
+
+            if (containerActive === null){
+                containerActive = setInterval(() => {
+                    ball_container_animation.classList.toggle("anim-active-container");
+                }, 10000);
+            }
+        }
 
         // set animation btn text
         btn_animation.textContent = text_state_arr[currTextOffset];
+
+        // set header text
+        header_main.innerHTML = getStringOfCharInSpan('H') +
+            getStringOfCharInSpan('e') +
+            getStringOfCharInSpan('l') +
+            getStringOfCharInSpan('l') +
+            getStringOfCharInSpan('o') +
+            getStringOfCharInSpan(' ') +
+            getStringOfCharInSpan('W') +
+            getStringOfCharInSpan('o') +
+            getStringOfCharInSpan('r') +
+            getStringOfCharInSpan('l') +
+            getStringOfCharInSpan('d');
 
         // set on click event:
         btn_animation.addEventListener("click", () =>{
@@ -309,7 +374,22 @@
             currTextOffset %= text_state_arr.length;
             btn_animation.textContent = text_state_arr[currTextOffset];
 
-            ball_animation.classList.toggle("anim-active");
+            // ball_animation.classList.toggle("anim-active");
+            // ball_container_animation.classList.toggle("anim-active-container");
+            if (currTextOffset === 1)
+                currInterval = setInterval(animationInterval, 100);
+            else {
+                clearInterval(currInterval);
+
+                clearInterval(containerActive);
+                clearInterval(ballActive);
+
+                ballActive = null;
+                containerActive = null;
+
+                ball_animation.classList.remove("anim-active");
+                ball_container_animation.classList.remove("anim-active-container");
+            }
         });
     </script>
 </body>
