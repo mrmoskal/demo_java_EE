@@ -8,23 +8,20 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Student {
+public class Employee {
     // vars:
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
+    private String email;
+    private String position;
 
     // constructors:
-    public Student() {
-    }
-    public Student(Long id, String name){
-        this.id = id;
-        this.name = name;
+    public Employee(){
     }
 
-    // "setter & getter"s:
+    // "setters & getters":
     // id ->
     public void setId(Long id) {
         this.id = id;
@@ -39,5 +36,21 @@ public class Student {
     }
     public String getName() {
         return name;
+    }
+
+    // email ->
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public String getEmail() {
+        return email;
+    }
+
+    // position ->
+    public void setPosition(String position) {
+        this.position = position;
+    }
+    public String getPosition() {
+        return position;
     }
 }
