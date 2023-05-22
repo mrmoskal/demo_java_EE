@@ -17,27 +17,5 @@ public class Student {
     private String name;
 
     // constructors:
-    public Student() {
-    }
-    public Student(Long id, String name){
-        this.id = id;
-        this.name = name;
-    }
 
-    // "setter & getter"s:
-    // id ->
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public Long getId() {
-        return id;
-    }
-
-    // name ->
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getName() {
-        return name;
-    }
 }
